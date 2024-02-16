@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: API Create Documentation
+  description: API documentation for Users, Companies, and Clients
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /users:
+    get:
+      summary: List app Users
+      parameters:
+        - name: username
+          in: query
+          description: Filter by username
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              example:
+                users:
+                  - username: john_doe
+                    email: john@example.com
+                  - username: jane_doe
+                    email: jane@example.com
+
+    put:
+      summary: Replace some User fields at once
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: string
+      requestBody:
+        description: User data to update
+        required: true
+        content:
+          application/json:
+            example:
+              username: new_username
+              email: new_email@example.com
+      responses:
+        200:
+          description: Successful update
+          content:
+            application/json:
+              example:
+                message: User updated successfully
+
+  /clients:
+    post:
+      summary: Create a new Client
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Client data
+        required: true
+        content:
+          application/json:
+            example:
+              name: client_name
+              user: user_id
+              company: company_id
+              email: client@example.com
+              phone: 1234567890
+      responses:
+        201:
+          description: Client created successfully
+          content:
+            application/json:
+              example:
+                message: Client created successfully
+
+    patch:
+      summary: Change any Client field
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Client ID
+          schema:
+            type: string
+      requestBody:
+        description: Client data to update
+        required: true
+        content:
+          application/json:
+            example:
+              name: new_client_name
+      responses:
+        200:
+          description: Successful update
+          content:
+            application/json:
+              example:
+                message: Client updated successfully
